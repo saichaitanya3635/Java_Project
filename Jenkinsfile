@@ -5,6 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from the repository
+                cleanWs() 
                 git 'https://github.com/saichaitanya3635/demo.git'
             }
         }
