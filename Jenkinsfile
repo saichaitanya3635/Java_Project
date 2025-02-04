@@ -1,6 +1,7 @@
 pipeline {
-    agent any
-
+    agent {
+                label 'WIN-TM'
+             }
     stages {
         stage('Checkout') {
             steps {
