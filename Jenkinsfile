@@ -1,6 +1,7 @@
 pipeline {
-    agent any
-
+    agent {
+                label 'WIN-TM'
+             }
     stages {
         stage('Checkout') {
             steps {
@@ -11,6 +12,9 @@ pipeline {
         }
 
         stage('Build') {
+            agent {
+                label 'WIN-TM'
+             }
             steps {
                 // Build the project using Maven
                 script {
@@ -22,6 +26,7 @@ pipeline {
 }
 
         
+
 
        
 
