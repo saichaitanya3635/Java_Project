@@ -16,11 +16,11 @@ pipeline {
                 label 'WIN-TM'
              }
             steps {
-                withMaven(maven: 'Maven')
+                withMaven(maven: 'Maven'){
                 // Build the project using Maven
-                script {
+                
                     bat 'mvn clean install'
-                }
+                
             }
         }
     }
