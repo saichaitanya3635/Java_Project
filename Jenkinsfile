@@ -11,6 +11,9 @@ pipeline {
         }
 
         stage('Build') {
+            agent {
+                label 'PMT-HPS'
+             }
             steps {
                 // Build the project using Maven
                 script {
