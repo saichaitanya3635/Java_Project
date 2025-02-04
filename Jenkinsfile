@@ -12,7 +12,7 @@ pipeline {
 
         stage('Build') {
             agent {
-                label 'PMS-HPT'
+                label 'WIN-TM'
              }
             steps {
                 // Build the project using Maven
