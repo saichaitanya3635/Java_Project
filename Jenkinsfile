@@ -16,12 +16,14 @@ pipeline {
                 label 'WIN-TM'
              }
             steps {
+                dir(env.WORKSPACE){
                 withMaven(maven: 'Maven'){
                 // Build the project using Maven
                 
                     bat 'mvn clean install'
                 
             }
+                }
         }
     }
 }
