@@ -1,23 +1,28 @@
 pipeline {
-    agent { label 'ubuntu' } // The agent is defined at the pipeline level
-
-    tools {
-        maven 'Maven 3.9.9' // Correct syntax for Maven tool installation
-    }
-
+    agent any
     stages {
-        stage('Checkout') {
-            steps {
-                cleanWs() // Clean workspace
-                git 'https://github.com/saichaitanya3635/demo.git' // Clone repository
-            }
-        }
-
         stage('Build') {
             steps {
-                script {
-                    sh 'mvn clean install' // Run Maven build
-                }
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t my-springboot-app .'
+            }
+        }
+        stage('Deploy Container') {
+            steps {
+                sh '''
+                docker stop springboot-app || true
+                docker rm springboot-app || true
+                docker run -d --name springboot-app -p 8080:8080 --restart=always my-springboot-app
+                '''
+            }
+        }
+        stage('Verify') {
+            steps {
+                sh 'curl -s http://127.0.0.1:8080/welcome || exit 1'
             }
         }
     }
