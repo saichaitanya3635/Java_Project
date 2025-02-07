@@ -1,40 +1,24 @@
 pipeline {
-    
-    agent {
-                label 'ubuntu'
-             }
+    agent { label 'ubuntu' } // The agent is defined at the pipeline level
+
     tools {
-        maven {
-                 installation: 'Maven 3.9.9', // The name of your Maven installation
-        }
+        maven 'Maven 3.9.9' // Correct syntax for Maven tool installation
     }
+
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the repository
-                cleanWs() 
-                git 'https://github.com/saichaitanya3635/demo.git'
+                cleanWs() // Clean workspace
+                git 'https://github.com/saichaitanya3635/demo.git' // Clone repository
             }
         }
 
         stage('Build') {
-            agent {
-                label 'ubuntu'
-             }
             steps {
-                // Build the project using Maven
-                
                 script {
-                    sh 'mvn clean install'
+                    sh 'mvn clean install' // Run Maven build
                 }
-            
-          }
- }
+            }
+        }
+    }
 }
-}
-
-        
-
-       
-
-    
