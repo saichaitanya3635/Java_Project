@@ -13,7 +13,7 @@ pipeline {
 
         stage('Build') {
             agent {
-                label 'WIN-TM'
+                label 'ubuntu'
              }
             steps {
                 // Build the project using Maven
