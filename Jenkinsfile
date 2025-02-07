@@ -19,7 +19,7 @@ pipeline {
                 // Build the project using Maven
                 tools {
                     maven {
-                     installation: 'Maven 3.9.9', // The name of your Maven installation
+                             installation: 'Maven 3.9.9', // The name of your Maven installation
                      }
                 }
                 script {
