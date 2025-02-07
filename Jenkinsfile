@@ -1,14 +1,19 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm  // This will pull the latest code from the repository
+            }
+        }
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn clean package -DskipTests'  // Build the Spring Boot JAR
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-springboot-app .'
+                sh 'docker build -t my-springboot-app .'  // Create the Docker image
             }
         }
         stage('Deploy Container') {
@@ -22,7 +27,7 @@ pipeline {
         }
         stage('Verify') {
             steps {
-                sh 'curl -s http://127.0.0.1:8080/welcome || exit 1'
+                sh 'curl -s http://127.0.0.1:8080/welcome || exit 1'  // Check if the app is running
             }
         }
     }
