@@ -1,19 +1,22 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven-3.9.9'  // Use the installed Maven from Jenkins
+    }
     stages {
         stage('Checkout Code') {
             steps {
-                checkout scm  // This will pull the latest code from the repository
+                checkout scm
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'  // Build the Spring Boot JAR
+                sh 'mvn clean package -DskipTests'
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-springboot-app .'  // Create the Docker image
+                sh 'docker build -t my-springboot-app .'
             }
         }
         stage('Deploy Container') {
@@ -27,7 +30,7 @@ pipeline {
         }
         stage('Verify') {
             steps {
-                sh 'curl -s http://127.0.0.1:8080/welcome || exit 1'  // Check if the app is running
+                sh 'curl -s http://127.0.0.1:8080/welcome || exit 1'
             }
         }
     }
