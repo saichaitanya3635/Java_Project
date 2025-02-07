@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven-3.9.9'  // Use the installed Maven from Jenkins
+        maven 'Maven 3.9.9'  // Use the installed Maven from Jenkins
     }
     stages {
         stage('Checkout Code') {
