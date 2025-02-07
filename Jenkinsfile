@@ -1,6 +1,6 @@
 pipeline {
     agent {
-                label 'WIN-TM'
+                label 'ubuntu'
              }
     stages {
         stage('Checkout') {
