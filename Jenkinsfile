@@ -17,15 +17,18 @@ pipeline {
              }
             steps {
                 // Build the project using Maven
-                 tools {
-                        maven 'Maven 3.9.9' // Replace 'Maven 3.8.6' with the name of your Maven installation
-                 }
+                tools {
+                    maven {
+                     installation: 'Maven 3.9.9', // The name of your Maven installation
+                     }
+                }
                 script {
                     sh 'mvn clean install'
                 }
-            }
-        }
-    }
+            
+          }
+ }
+}
 }
 
         
