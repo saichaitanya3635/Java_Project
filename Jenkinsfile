@@ -12,9 +12,12 @@ pipeline {
     stages {
         stage('Configure JFrog CLI') {
             steps {
-                withCredentials([string(credentialsId: 'JF_ACCESS_TOKEN', variable: 'JF_ACCESS_TOKEN')]) {
-                    sh 'jf c add trialufqsz0 --url=$ARTIFACTORY_URL --access-token=$JF_ACCESS_TOKEN --interactive=false'
-                }
+                 withCredentials([string(credentialsId: 'JF_ACCESS_TOKEN', variable: 'JF_ACCESS_TOKEN')]) {
+                      sh '''
+                      jf c remove trialufqsz0 --quiet || true
+                     jf c add trialufqsz0 --url=$ARTIFACTORY_URL --access-token=$JF_ACCESS_TOKEN --interactive=false
+                      '''
+        } 
             }
         }
         stage('Build') {
