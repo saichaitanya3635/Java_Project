@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_REGISTRY/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest .'
+                sh 'docker build -t $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest .'
             }
         }
         stage('Push to JFrog Artifactory') {
