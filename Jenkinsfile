@@ -7,7 +7,6 @@ pipeline {
     }
     tools {
         maven 'Maven 3.9.9'
-        jfrog 'jfrog-cli'
     }
     stages {
         stage('Checkout Code') {
@@ -22,7 +21,9 @@ pipeline {
         }
         stage('Authenticate Docker with JFrog') {
             steps {
-                sh "echo '${env.ARTIFACTORY_PASSWORD}' | docker login $ARTIFACTORY_URL -u '${env.ARTIFACTORY_USERNAME}' --password-stdin"
+                withCredentials([string(credentialsId: 'JF_ACCESS_TOKEN', variable: 'JFROG_ACCESS_TOKEN')]) {
+                    sh "echo '${JFROG_ACCESS_TOKEN}' | docker login $ARTIFACTORY_URL -u 'ACCESS-TOKEN' --password-stdin"
+                }
             }
         }
         stage('Build Docker Image') {
