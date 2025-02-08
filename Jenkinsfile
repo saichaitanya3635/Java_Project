@@ -33,4 +33,21 @@ pipeline {
                 sh 'docker build -t $DOCKER_IMAGE:latest .'
             }
         }
-        stage('Push to JFrog A
+        stage('Push to JFrog Artifactory') {
+            steps {
+                sh '''
+                jfrog rt docker-push $DOCKER_IMAGE:latest $ARTIFACTORY_REPO --server-id=$SERVER_ID
+                '''
+            }
+        }
+        stage('Deploy Container') {
+            steps {
+                sh '''
+                docker stop springboot-app || true
+                docker rm springboot-app || true
+                docker run -d --name springboot-app -p 8080:8080 --restart=always $JFROG_PLATFORM_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest
+                '''
+            }
+        }
+    }
+}
