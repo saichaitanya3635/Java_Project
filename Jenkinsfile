@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Push to JFrog Artifactory') {
             steps {
-                sh 'docker push $DOCKER_REGISTRY/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest'
+                sh 'docker push $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest'
             }
         }
         stage('Deploy Container') {
