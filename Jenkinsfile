@@ -2,12 +2,12 @@ pipeline {
     agent any
     environment {
         ARTIFACTORY_URL = 'trialufqsz0.jfrog.io'
-        DOCKER_REGISTRY = 'docker.trialufqsz0.jfrog.io'
         DOCKER_IMAGE = 'my-springboot-app'
         ARTIFACTORY_REPO = 'docker-local'
     }
     tools {
         maven 'Maven 3.9.9'
+        jfrog 'jfrog-cli'
     }
     stages {
         stage('Checkout Code') {
@@ -18,15 +18,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
-            }
-        }
-        stage('Authenticate Docker with JFrog') {
-            steps {
-                withCredentials([string(credentialsId: 'JF_ACCESS_TOKEN', variable: 'JFROG_ACCESS_TOKEN')]) {
-                    sh '''
-                    echo $JFROG_ACCESS_TOKEN | docker login $DOCKER_REGISTRY -u _ --password-stdin
-                    '''
-                }
             }
         }
         stage('Build Docker Image') {
