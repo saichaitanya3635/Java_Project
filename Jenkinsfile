@@ -1,7 +1,13 @@
 pipeline {
     agent any
+    environment {
+        ARTIFACTORY_URL = 'trialufqsz0.jfrog.io'
+        DOCKER_IMAGE = 'my-springboot-app'
+        ARTIFACTORY_REPO = 'docker-local'
+    }
     tools {
-        maven 'Maven 3.9.9'  // Use the installed Maven from Jenkins
+        maven 'Maven 3.9.9'
+        jfrog 'jfrog-cli'
     }
     stages {
         stage('Checkout Code') {
@@ -14,9 +20,19 @@ pipeline {
                 sh 'mvn clean package -DskipTests'
             }
         }
+        stage('Authenticate Docker with JFrog') {
+            steps {
+                sh "echo '${env.ARTIFACTORY_PASSWORD}' | docker login $ARTIFACTORY_URL -u '${env.ARTIFACTORY_USERNAME}' --password-stdin"
+            }
+        }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-springboot-app .'
+                sh 'docker build -t $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest .'
+            }
+        }
+        stage('Push to JFrog Artifactory') {
+            steps {
+                sh 'docker push $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest'
             }
         }
         stage('Deploy Container') {
@@ -24,10 +40,9 @@ pipeline {
                 sh '''
                 docker stop springboot-app || true
                 docker rm springboot-app || true
-                docker run -d --name springboot-app -p 8080:8080 --restart=always my-springboot-app
+                docker run -d --name springboot-app -p 8080:8080 --restart=always $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest
                 '''
             }
         }
-       
     }
 }
