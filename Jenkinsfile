@@ -4,7 +4,7 @@ pipeline {
         ARTIFACTORY_HOST = 'trialufqsz0.jfrog.io'  // Removed 'https://'
         ARTIFACTORY_URL = 'https://trialufqsz0.jfrog.io' // Keep for authentication
         DOCKER_IMAGE = 'my-springboot-app'
-        ARTIFACTORY_REPO = 'docker-local'
+        ARTIFACTORY_REPO = 'docker--docker-local'
     }
     tools {
         maven 'Maven 3.9.9'
