@@ -1,7 +1,8 @@
 pipeline {
     agent any
     environment {
-        ARTIFACTORY_URL = 'https://trialufqsz0.jfrog.io'
+        ARTIFACTORY_HOST = 'trialufqsz0.jfrog.io'  // Removed 'https://'
+        ARTIFACTORY_URL = 'https://trialufqsz0.jfrog.io' // Keep for authentication
         DOCKER_IMAGE = 'my-springboot-app'
         ARTIFACTORY_REPO = 'docker-local'
     }
@@ -23,12 +24,12 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest .'
+                sh 'docker build -t $ARTIFACTORY_HOST/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest .'
             }
         }
         stage('Push to JFrog Artifactory') {
             steps {
-                sh 'jf docker push $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest'
+                sh 'jf docker push $ARTIFACTORY_HOST/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest'
             }
         }
         stage('Deploy Container') {
@@ -36,7 +37,7 @@ pipeline {
                 sh '''
                 docker stop springboot-app || true
                 docker rm springboot-app || true
-                docker run -d --name springboot-app -p 8080:8080 --restart=always $ARTIFACTORY_URL/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest
+                docker run -d --name springboot-app -p 8080:8080 --restart=always $ARTIFACTORY_HOST/$ARTIFACTORY_REPO/$DOCKER_IMAGE:latest
                 '''
             }
         }
