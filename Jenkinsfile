@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Configure JFrog CLI') {
             steps {
-                withCredentials([string(credentialsId: 'JFROG_ACCESS_TOKEN', variable: 'JF_ACCESS_TOKEN')]) {
+                withCredentials([string(credentialsId: 'JF_ACCESS_TOKEN', variable: 'JF_ACCESS_TOKEN')]) {
                     sh 'jfrog config add $SERVER_ID --url=$JFROG_PLATFORM_URL --access-token=$JF_ACCESS_TOKEN --interactive=false'
                 }
             }
